@@ -1,0 +1,164 @@
+// //@version=5
+// indicator("Custom Timeframe Comparison Indicator", overlay=true)
+
+// // User Inputs for Timeframes
+// tf_lower = input.string("15", "Lower Timeframe", options=["15", "30", "60"])
+// tf_higher = input.string("240", "Higher Timeframe", options=["240", "D", "W", "M"])
+
+// // Get OHLC data for Lower Timeframe
+// open_lower       = request.security(syminfo.tickerid, tf_lower, open)
+// high_lower       = request.security(syminfo.tickerid, tf_lower, high)
+// low_lower        = request.security(syminfo.tickerid, tf_lower, low)
+// close_lower      = request.security(syminfo.tickerid, tf_lower, close)
+// open_lower_prev  = request.security(syminfo.tickerid, tf_lower, open[1])
+// high_lower_prev  = request.security(syminfo.tickerid, tf_lower, high[1])
+// low_lower_prev   = request.security(syminfo.tickerid, tf_lower, low[1])
+// close_lower_prev = request.security(syminfo.tickerid, tf_lower, close[1])
+
+// // Get OHLC data for Higher Timeframe
+// open_higher       = request.security(syminfo.tickerid, tf_higher, open)
+// high_higher       = request.security(syminfo.tickerid, tf_higher, high)
+// low_higher        = request.security(syminfo.tickerid, tf_higher, low)
+// close_higher      = request.security(syminfo.tickerid, tf_higher, close)
+// open_higher_prev  = request.security(syminfo.tickerid, tf_higher, open[1])
+// high_higher_prev  = request.security(syminfo.tickerid, tf_higher, high[1])
+// low_higher_prev   = request.security(syminfo.tickerid, tf_higher, low[1])
+// close_higher_prev = request.security(syminfo.tickerid, tf_higher, close[1])
+
+// // Condition 1
+// cond1a = (close_lower_prev < open_higher) and (high_lower_prev > open_higher)
+// // alertcondition(cond1a, title="Condition 1a", message=tf_lower + " c < " + tf_higher + " o and " + tf_lower + " h > " + tf_higher + " o")
+
+// cond1b = (open_lower_prev > open_higher) and (low_lower_prev < open_higher)
+// // alertcondition(cond1b, title="Condition 1b", message=tf_lower + " o > " + tf_higher + " o and " + tf_lower + " l < " + tf_higher + " o")
+
+// // Condition 2
+// cond2a = (close_lower_prev > high_higher_prev) and (low_lower_prev < high_higher)
+// // alertcondition(cond2a, title="Condition 2a", message=tf_lower + " c > " + tf_higher + " h and " + tf_lower + " l < " + tf_higher + " h")
+
+// cond2b = (open_lower_prev < high_higher_prev) and (high_lower_prev > high_higher)
+// // alertcondition(cond2b, title="Condition 2b", message=tf_lower + " o < " + tf_higher + " h and " + tf_lower + " h > " + tf_higher + " h")
+
+// // Condition 3
+// cond3a = (close_lower_prev > low_higher_prev) and (low_lower_prev < low_higher)
+// // alertcondition(cond3a, title="Condition 3a", message=tf_lower + " c > " + tf_higher + " l and " + tf_lower + " l < " + tf_higher + " l")
+
+// cond3b = (open_lower_prev < low_higher_prev) and (high_lower_prev > low_higher)
+// // alertcondition(cond3b, title="Condition 3b", message=tf_lower + " o < " + tf_higher + " l and " + tf_lower + " h > " + tf_higher + " l")
+
+// // Condition 4
+// cond4a = (close_lower_prev > close_higher_prev) and (low_lower_prev < close_higher)
+// // alertcondition(cond4a, title="Condition 4a", message=tf_lower + " c > " + tf_higher + " c and " + tf_lower + " l < " + tf_higher + " c")
+
+// cond4b = (open_lower_prev < close_higher_prev) and (high_lower_prev > close_higher)
+// // alertcondition(cond4b, title="Condition 4b", message=tf_lower + " o < " + tf_higher + " c and " + tf_lower + " h > " + tf_higher + " c")
+
+// // Additional Conditions for Comparing Lower and Higher Timeframes
+// // Condition for Open
+// cond_open1 = (close_lower > open_higher) and (low_lower < open_higher)
+// // alertcondition(cond_open1, title="Condition Open1", message=tf_lower + " c > " + tf_higher + " o and " + tf_lower + " l < " + tf_higher + " o")
+
+// cond_open2 = (close_lower < open_higher) and (high_lower > open_higher)
+// // alertcondition(cond_open2, title="Condition Open2", message=tf_lower + " c < " + tf_higher + " o and " + tf_lower + " h > " + tf_higher + " o")
+
+// // Condition for High
+// cond_high1 = (close_lower > high_higher_prev) and (low_lower < high_higher_prev)
+// // alertcondition(cond_high1, title="Condition High1", message=tf_lower + " c > " + tf_higher + " h and " + tf_lower + " l < " + tf_higher + " h")
+
+// cond_high2 = (close_lower < high_higher_prev) and (high_lower > high_higher_prev)
+// // alertcondition(cond_high2, title="Condition High2", message=tf_lower + " c < " + tf_higher + " h and " + tf_lower + " h > " + tf_higher + " h")
+
+// // Condition for Low
+// cond_low1 = (close_lower > low_higher_prev) and (low_lower < low_higher_prev)
+// // alertcondition(cond_low1, title="Condition Low1", message=tf_lower + " c > " + tf_higher + " l and " + tf_lower + " l < " + tf_higher + " l")
+
+// cond_low2 = (close_lower < low_higher_prev) and (high_lower > low_higher_prev)
+// // alertcondition(cond_low2, title="Condition Low2", message=tf_lower + " c < " + tf_higher + " l and " + tf_lower + " h > " + tf_higher + " l")
+
+// // Condition for Close
+// cond_close1 = (close_lower > close_higher_prev) and (low_lower < close_higher_prev)
+// // alertcondition(cond_close1, title="Condition Close1", message=tf_lower + " c > " + tf_higher + " c and " + tf_lower + " l < " + tf_higher + " c")
+
+// cond_close2 = (close_lower < close_higher_prev) and (high_lower > close_higher_prev)
+// // alertcondition(cond_close2, title="Condition Close2", message=tf_lower + " c < " + tf_higher + " c and " + tf_lower + " h > " + tf_higher + " c")
+
+// // Plotting for visualization (optional)
+// plotshape(cond1a, title="Cond1a", location=location.abovebar, color=color.green, style=shape.triangleup, size=size.tiny)
+// plotshape(cond1b, title="Cond1b", location=location.belowbar, color=color.red, style=shape.triangledown, size=size.tiny)
+// plotshape(cond2a, title="Cond2a", location=location.abovebar, color=color.green, style=shape.circle, size=size.tiny)
+// plotshape(cond2b, title="Cond2b", location=location.belowbar, color=color.red, style=shape.circle, size=size.tiny)
+// plotshape(cond3a, title="Cond3a", location=location.abovebar, color=color.green, style=shape.square, size=size.tiny)
+// plotshape(cond3b, title="Cond3b", location=location.belowbar, color=color.red, style=shape.square, size=size.tiny)
+// plotshape(cond4a, title="Cond4a", location=location.abovebar, color=color.green, style=shape.diamond, size=size.tiny)
+// plotshape(cond4b, title="Cond4b", location=location.belowbar, color=color.red, style=shape.diamond, size=size.tiny)
+
+
+//@version=5
+indicator("Custom Timeframe Comparison Indicator", overlay=true)
+
+// User Inputs for Timeframes
+tf_lower = input.string("15", "Lower Timeframe", options=["15", "30", "60"])
+tf_higher = input.string("240", "Higher Timeframe", options=["240", "D", "W", "M"])
+
+// Get OHLC data for Lower Timeframe
+open_lower       = request.security(syminfo.tickerid, tf_lower, open)
+high_lower       = request.security(syminfo.tickerid, tf_lower, high)
+low_lower        = request.security(syminfo.tickerid, tf_lower, low)
+close_lower      = request.security(syminfo.tickerid, tf_lower, close)
+open_lower_prev  = request.security(syminfo.tickerid, tf_lower, open[1])
+high_lower_prev  = request.security(syminfo.tickerid, tf_lower, high[1])
+low_lower_prev   = request.security(syminfo.tickerid, tf_lower, low[1])
+close_lower_prev = request.security(syminfo.tickerid, tf_lower, close[1])
+
+// Get OHLC data for Higher Timeframe
+open_higher       = request.security(syminfo.tickerid, tf_higher, open)
+high_higher       = request.security(syminfo.tickerid, tf_higher, high)
+low_higher        = request.security(syminfo.tickerid, tf_higher, low)
+close_higher      = request.security(syminfo.tickerid, tf_higher, close)
+open_higher_prev  = request.security(syminfo.tickerid, tf_higher, open[1])
+high_higher_prev  = request.security(syminfo.tickerid, tf_higher, high[1])
+low_higher_prev   = request.security(syminfo.tickerid, tf_higher, low[1])
+close_higher_prev = request.security(syminfo.tickerid, tf_higher, close[1])
+
+// Condition 1
+cond1a = (close_lower_prev < open_higher) and (high_lower_prev > open_higher)
+cond1b = (open_lower_prev > open_higher) and (low_lower_prev < open_higher)
+
+// Condition 2
+cond2a = (close_lower_prev > high_higher_prev) and (low_lower_prev < high_higher)
+cond2b = (open_lower_prev < high_higher_prev) and (high_lower_prev > high_higher)
+
+// Condition 3
+cond3a = (close_lower_prev > low_higher_prev) and (low_lower_prev < low_higher)
+cond3b = (open_lower_prev < low_higher_prev) and (high_lower_prev > low_higher)
+
+// Condition 4
+cond4a = (close_lower_prev > close_higher_prev) and (low_lower_prev < close_higher)
+cond4b = (open_lower_prev < close_higher_prev) and (high_lower_prev > close_higher)
+
+// Additional Conditions for Comparing Lower and Higher Timeframes
+// Condition for Open
+cond_open1 = (close_lower > open_higher) and (low_lower < open_higher)
+cond_open2 = (close_lower < open_higher) and (high_lower > open_higher)
+
+// Condition for High
+cond_high1 = (close_lower > high_higher_prev) and (low_lower < high_higher_prev)
+cond_high2 = (close_lower < high_higher_prev) and (high_lower > high_higher_prev)
+
+// Condition for Low
+cond_low1 = (close_lower > low_higher_prev) and (low_lower < low_higher_prev)
+cond_low2 = (close_lower < low_higher_prev) and (high_lower > low_higher_prev)
+
+// Condition for Close
+cond_close1 = (close_lower > close_higher_prev) and (low_lower < close_higher_prev)
+cond_close2 = (close_lower < close_higher_prev) and (high_lower > close_higher_prev)
+
+// Plotting for visualization (optional)
+plotshape(cond1a, title="Cond1a", location=location.abovebar, color=color.green, style=shape.triangleup, size=size.tiny)
+plotshape(cond1b, title="Cond1b", location=location.belowbar, color=color.red, style=shape.triangledown, size=size.tiny)
+plotshape(cond2a, title="Cond2a", location=location.abovebar, color=color.green, style=shape.circle, size=size.tiny)
+plotshape(cond2b, title="Cond2b", location=location.belowbar, color=color.red, style=shape.circle, size=size.tiny)
+plotshape(cond3a, title="Cond3a", location=location.abovebar, color=color.green, style=shape.square, size=size.tiny)
+plotshape(cond3b, title="Cond3b", location=location.belowbar, color=color.red, style=shape.square, size=size.tiny)
+plotshape(cond4a, title="Cond4a", location=location.abovebar, color=color.green, style=shape.diamond, size=size.tiny)
+plotshape(cond4b, title="Cond4b", location=location.belowbar, color=color.red, style=shape.diamond, size=size.tiny)
